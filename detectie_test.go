@@ -32,3 +32,13 @@ func TestDetectIe(t *testing.T) {
 
 	}
 }
+
+func BenchmarkIndex(b *testing.B) {
+	ua := `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586`
+	if ie, ver := detectie.DetectIe(ua); !ie || ver != float32(13.10586) {
+		b.Fatalf("DetectIe(%q) = %t %.2f, want %t %.2f", ua, ie, ver, true, float32(13.10586))
+	}
+	for i := 0; i < b.N; i++ {
+		detectie.DetectIe(ua)
+	}
+}
